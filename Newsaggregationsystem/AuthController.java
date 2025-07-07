@@ -1,8 +1,9 @@
 package com.example.Newsaggregationsystem.controller;
 
 import com.example.Newsaggregationsystem.DTO.SignupRequestDTO;
-import com.example.Newsaggregationsystem.DTO.LoginRequestDTO;
 import com.example.Newsaggregationsystem.service.AuthService;
+import com.example.Newsaggregationsystem.DTO.LoginRequestDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,15 +16,8 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public String signup(@RequestBody SignupRequestDTO signupRequest) {
-
-		boolean success = authService.signUp(signupRequest.getUsername(), signupRequest.getEmail(),
-				signupRequest.getPassword(), signupRequest.getRole());
-
-		if (success) {
-			return "Signup successful";
-		} else {
-			return "Username or email already exists";
-		}
+		return authService.signUp(signupRequest.getUsername(), signupRequest.getEmail(), signupRequest.getPassword(),
+				signupRequest.getRole());
 	}
 
 	@PostMapping("/login")

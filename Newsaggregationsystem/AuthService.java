@@ -14,11 +14,24 @@ public class AuthService {
 		this.userRepo = userRepo;
 	}
 
-	public boolean signUp(String username, String email, String password, String role) {
+	public String signUp(String username, String email, String password, String role) {
+		if (username == null || username.trim().isEmpty()) {
+			return "Username is required.";
+		}
+		if (email == null || email.trim().isEmpty()) {
+			return "Email is required.";
+		}
+		if (!email.endsWith("@gmail.com")) {
+			return "Only Gmail addresses are allowed.";
+		}
+		if (password == null || password.trim().isEmpty()) {
+			return "Password is required.";
+		}
+		if (password.length() < 6) {
+			return "Password must be at least 6 characters long.";
+		}
 		if (userRepo.findByUsername(username) != null || userRepo.findByEmail(email) != null) {
-			System.out.println("Email already exists");
-
-			return false;
+			return "Username or email already exists.";
 		}
 
 		Users user = new Users();
@@ -29,23 +42,30 @@ public class AuthService {
 
 		try {
 			userRepo.save(user);
-
-			return true;
-
+			return "Signup successful";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return "An error occurred during signup.";
 		}
 	}
-
 	public boolean login(String username, String password) {
+		if (username == null || username.trim().isEmpty()) {
+			System.out.println("Username is required.");
+			return false;
+		}
+		if (password == null || password.trim().isEmpty()) {
+			System.out.println("Password is required.");
+			return false;
+		}
+
 		Users user = userRepo.findByUsername(username);
 		if (user == null || !user.getPassword().equals(password)) {
-
+			System.out.println("Invalid credentials.");
 			return false;
 		}
 
 		currentUser = user;
+		System.out.println("User logged in: " + username);
 		return true;
 	}
 
