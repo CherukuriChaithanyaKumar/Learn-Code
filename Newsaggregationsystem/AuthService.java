@@ -21,8 +21,8 @@ public class AuthService {
 		if (email == null || email.trim().isEmpty()) {
 			return "Email is required.";
 		}
-		if (!email.endsWith("@gmail.com")) {
-			return "Only Gmail addresses are allowed.";
+		if (!email.contains("@") || email.startsWith("@") || email.endsWith("@")) {
+			return "Invalid email format. Email must be like: user@example.com";
 		}
 		if (password == null || password.trim().isEmpty()) {
 			return "Password is required.";
